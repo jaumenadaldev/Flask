@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Gestió d'Albarans</h2>
+<form method="POST">
+    <div class="form-group">
+        <label for="proveidor">Proveïdor</label>
+        <input type="text" class="form-control" id="proveidor" name="proveidor" required>
+    </div>
+    <div class="form-group">
+        <label for="data_recepcio">Data de Recepció</label>
+        <input type="date" class="form-control" id="data_recepcio" name="data_recepcio" required>
+    </div>
+    <div class="form-group">
+        <label for="productes">Productes</label>
+        <select multiple class="form-control" id="productes" name="producte_id">
+            {% for producte in productes %}
+            <option value="{{ producte.id }}">{{ producte.nom }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="quantitat">Quantitat</label>
+        <input type="number" class="form-control" id="quantitat" name="quantitat" required>
+    </div>
+    <div class="form-group">
+        <label for="preu_unitat">Preu per Unitat</label>
+        <input type="number" step="0.01" class="form-control" id="preu_unitat" name="preu_unitat" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Afegir Albarà</button>
+</form>
+<hr>
+<h3>Llista d'Albarans</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Proveïdor</th>
+            <th>Data de Recepció</th>
+            <th>Productes</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for albara in albarans %}
+        <tr>
+            <td>{{ albara.id }}</td>
+            <td>{{ albara.proveidor }}</td>
+            <td>{{ albara.data_recepcio }}</td>
+            <td>
+                <ul>
+                    {% for linia in albara.linies %}
+                    <li>{{ linia.producte.nom }}: {{ linia.quantitat }} unitats a {{ linia.preu_unitat }} €/u</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
